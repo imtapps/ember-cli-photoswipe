@@ -1,8 +1,7 @@
 /* jshint node: true */
 'use strict';
 
-var fs   = require('fs');
-var path = require('path');
+var path   = require('path');
 var funnel = require('broccoli-funnel');
 
 module.exports = {
@@ -12,17 +11,11 @@ module.exports = {
     this.app  = app;
     var psDir = app.bowerDirectory + '/photoswipe';
 
-    if (!fs.existsSync(psDir + '/dist/photoswipe-ember.js')) {
-      var msg = '[ember-cli-photoswipe]: You need to run ember g photoswipe to ';
-      msg += 'install required dependencies for this addon.';
-      throw new Error(msg);
-    }
-
     app.import(psDir + '/dist/photoswipe.css');
     app.import(psDir + '/dist/default-skin/default-skin.css');
-    app.import(psDir + '/dist/photoswipe-ember.js');
     app.import(psDir + '/dist/photoswipe-ui-default.min.js');
     app.import(psDir + '/dist/default-skin/default-skin.svg');
+    app.import('vendor/photoswipe-ember.js');
   },
 
   treeForPublic: function() {
