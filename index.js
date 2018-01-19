@@ -11,18 +11,20 @@ module.exports = {
     this.app  = app;
     var psDir = app.bowerDirectory + '/photoswipe';
 
-    app.import(psDir + '/dist/photoswipe.css');
-    app.import(psDir + '/dist/default-skin/default-skin.css');
-    app.import(psDir + '/dist/photoswipe-ui-default.min.js');
-    app.import(psDir + '/dist/default-skin/default-skin.svg');
-    app.import('vendor/photoswipe-ember.js');
+    if (!process.env.EMBER_CLI_FASTBOOT) {
+      app.import(psDir + '/dist/photoswipe.css');
+      app.import(psDir + '/dist/default-skin/default-skin.css');
+      app.import(psDir + '/dist/photoswipe.js');
+      app.import(psDir + '/dist/photoswipe-ui-default.min.js');
+    }
   },
 
   treeForPublic: function() {
     var svgPath = path.join(this.app.bowerDirectory, 'photoswipe', 'dist', 'default-skin');
     var publicTree = new funnel(this.treeGenerator(svgPath), {
       srcDir: '/',
-      destDir: '/assets'
+      destDir: '/assets',
+      exclude: ['default-skin.css']
     });
     return publicTree;
   }
