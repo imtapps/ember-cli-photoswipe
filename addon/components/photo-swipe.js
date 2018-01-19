@@ -46,67 +46,27 @@ export default Em.Component.extend({
   },
 
   _initItemGallery: function() {
-    this.set('gallery', new PhotoSwipe(
+    var gallery = new PhotoSwipe(
       this.get('pswpEl'),
       this.get('pswpTheme'),
       this.get('items'),
       this.get('options')
-    ));
+    );
     if (this.get('reinit')) {
-      this.sendAction('reinit', this.get('gallery'));
+      this.sendAction('reinit', gallery);
     }
-    this._reInitOnClose();
+    this._reInitOnClose(gallery);
   },
 
-  _reInitOnClose: function() {
+  _reInitOnClose: function(gallery) {
     var component = this;
-    this.get('gallery').listen('close', function() {
+    gallery.listen('close', function() {
       run.next(function() {
-        component._initItemGallery();
+        component.sendAction('destroy');
       });
     });
   },
 
-  itemObserver: Em.observer('items', function(){
-    var component = this;
-    component._initItemGallery();
-  }),
-
-  /**
-   * DEPRECATED
-   *
-   * Code exists for backward compatibility of block usage
-   * up to ember-cli-photoswipe versions 1.0.1.
-   */
-  click: function(evt) {
-
-    if (this.get('items')) {
-      return; // ignore - not using deprecated block form
-    }
-
-    var aElement = this.$(evt.target).parent();
-    var index    = this.$("a.photo-item").index( aElement );
-
-    if (!aElement.is('a')) { return; }
-
-    evt.preventDefault();
-
-    // setup options, such as index for index
-    this._buildOptions(this._getBounds.bind(this));
-    this.set('options.index', index);
-
-    var pSwipe = new PhotoSwipe(
-      this.get('pswpEl'),
-      this.get('pswpTheme'),
-      this.get('calculatedItems'),
-      this.get('options')
-    );
-    this.set('gallery', pSwipe);
-    this.get('gallery').init();
-  },
-  /**
-   * END DEPRECATED
-   */
 
   _getBounds: function(i) {
     var img      = this.$('img').get(i),
@@ -128,8 +88,7 @@ export default Em.Component.extend({
         this.get('items'),
         this.get('options')
       );
-      this.set('gallery', pSwipe);
-      this.get('gallery').init();
+      this.sendAction('postLaunchGallery', pSwipe);
     }
   },
 
