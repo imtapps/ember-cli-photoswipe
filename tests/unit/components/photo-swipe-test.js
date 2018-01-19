@@ -4,7 +4,9 @@ import {
   test
 } from 'ember-qunit';
 
-moduleForComponent('photo-swipe', 'PhotoSwipeComponent');
+moduleForComponent('photo-swipe', 'PhotoSwipeComponent', {
+  unit: true
+});
 
 test('it renders', function(assert) {
   assert.expect(2);
@@ -13,14 +15,14 @@ test('it renders', function(assert) {
   var component = this.subject();
   assert.equal(component._state, 'preRender');
 
-  // appends the component to the page
-  this.append();
-  assert.equal(component._state, 'inDOM');
+  // renders the component to the page
+  this.render();
+  equal(component._state, 'inDOM');
 });
 
-test('it renders the photoswipe template', function(assert) {
-  assert.expect(1);
-  this.append();
+test('it renders the photoswipe template', function() {
+  expect(1);
+  this.render();
   var component = this.subject();
   var photoswipe = component.$('.pswp');
 

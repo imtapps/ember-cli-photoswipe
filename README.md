@@ -1,28 +1,38 @@
 # Ember-cli-photoswipe [![Build Status](https://travis-ci.org/poetic/ember-cli-photoswipe.svg)](https://travis-ci.org/poetic/ember-cli-photoswipe)
 
 Ember-cli Addon adaptation of the popular photo gallery library
-[Photoswipe](https://github.com/dimsemenov/PhotoSwipe).
+[PhotoSwipe](https://github.com/dimsemenov/PhotoSwipe).
 
 ## Usage
 
 ```html
-{{#photo-swipe}}
-  <a class="photo-item" href="http://placekitten.com/g/600/400" data-width="600" data-height="400">
-    <img src="http://placekitten.com/g/300/200" alt="kitty!">
-  </a>
+{{#photo-swipe items=model as |img|}}
+  <img class="thumb" src={{img.src}} alt={{img.title}}>
 {{/photo-swipe}}
 ```
 
 By wrapping your gallery in the component, the addon will take care of
-instantiating Photoswipe for you and for calculating the thumbnail bounds so
+instantiating PhotoSwipe for you and for calculating the thumbnail bounds so
 you get the nice zoom in/out animations right out of the box. Easy, right?
 
-Notice that you need to pass the attributes of `data-width` and `data-height`
-to the `<a>` element in order for it to animate. This also works by using an `{{#each}}`
-block to populate your thumbnails. See `tests/dummy/app/templates/application.hbs`
-as an example of this.
+See `tests/dummy/app/templates/application.hbs` as an example of this.
 
-If you want to instanciate a Photoswipe gallery from an action instead of a
+The `items` property is required and an array of objects should be
+passed to it. PhotoSwipe expects these items to have the following structure:
+
+```javascript
+[
+  {
+    src: 'http://placekitten.com/g/600/400',
+    w: 600,
+    h: 400,
+    title: 'whooa',
+    msrc: '(optional) larger image'
+  }
+]
+```
+
+If you want to instantiate a PhotoSwipe gallery from an action instead of a
 thumbnail, you can also do the following:
 
 ```javascript
@@ -40,32 +50,18 @@ actions: {
 ```
 
 Any property bound to `gallery` will become the actual gallery object.
-This is used to instanciate PhotoSwipe and to interact with the live instance.
+This is used to instantiate PhotoSwipe and to interact with the live instance.
 
-Any photoswipe options can be passed to the `options` property of the component.
+Any PhotoSwipe options can be passed to the `options` property of the component.
 For now the history module is disabled since it breaks ember routing.
 
-Finally, the `items` property is required and an array of objects should be
-passed to it. For example:
-
-```javascript
-items = [
-  {
-    src: 'http://placekitten.com/g/600/400',
-    w: 600,
-    h: 400,
-    title: 'whooa'
-  }
-]
-```
-
 More functionality is on the way, this is a work in progress. You can find
-photoswipe documentation [here](http://photoswipe.com/).
+PhotoSwipe documentation [here](http://photoswipe.com/).
 
 ## More Options
 
 You can pass the following extra options to the options property in the
-photoswipe component to hide photoswipe buttons (default to false):
+PhotoSwipe component to hide PhotoSwipe buttons (default to false):
 
 1. `hideClose`
 2. `hideShare`
@@ -85,17 +81,13 @@ run the generator.
 
 ###### Ember-cli < 0.1.5
 For versions under 0.1.5 you need to run `npm install ember-cli-photoswipe
---save-dev` and then run `ember g photoswipe` in your project.
-
-###### IMPORTANT!
-You must run `ember g photoswipe` whenever your `bower_components` gets cleared, typically in CI environments and fresh clones.
-This is because the addon modifies the content of `bower_components/photoswipe`, and it must be re-done after it was reset. You might also want to add the above command into your `postinstall` hook.
+--save-dev`.
 
 ## Running
 
 To run the dummy app:
 
-* `git clone https://github.com/DanyHunter/ember-cli-photoswipe.git`
+* `git clone https://github.com/poetic/ember-cli-photoswipe.git`
 * `ember server`
 * Visit your app at http://localhost:4200.
 
