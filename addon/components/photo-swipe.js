@@ -1,15 +1,19 @@
 /* global PhotoSwipe */
 /* global PhotoSwipeUI_Default */
 
-import Em from 'ember';
 
-var run = Em.run;
+import { merge } from '@ember/polyfills';
+import { isPresent } from '@ember/utils';
+import Component from '@ember/component';
+import { run, scheduleOnce } from '@ember/runloop';
+import layout from '../templates/components/photo-swipe';
 
-export default Em.Component.extend({
+export default Component.extend({
+  layout,
 
-  onInsert: Em.on('didInsertElement', function() {
+  didInsertElement() {
 
-    Em.run.scheduleOnce('afterRender', this, function() {
+    scheduleOnce('afterRender', this, function() {
       this.set('pswpEl', this.$('.pswp')[0]);
       this.set('pswpTheme', PhotoSwipeUI_Default);
 
@@ -18,109 +22,58 @@ export default Em.Component.extend({
       if (this.get('items')) {
         return this._initItemGallery();
       }
-
-      /**
-       * DEPRECATED
-       *
-       * Code exists for backward compatibility of block usage
-       * up to ember-cli-photoswipe versions 1.0.1.
-       */
-      return this._calculateItems();
-      /**
-       * END DEPRECATED
-       */
     });
-  }),
+  },
 
   _buildOptions: function(getThumbBoundsFn) {
-     var reqOpts = {
+    var reqOpts = {
       history: false
     };
 
-    if (Em.isPresent(getThumbBoundsFn)) {
+    if (isPresent(getThumbBoundsFn)) {
       reqOpts.getThumbBoundsFn = getThumbBoundsFn;
     }
 
-    var options = Em.merge(reqOpts, this.get('options') || {});
+    var options = merge(reqOpts, this.get('options') || {});
     this.set('options', options);
   },
 
-  _initItemGallery: function() {
+  setupGallery(component) {
     var gallery = new PhotoSwipe(
-      this.get('pswpEl'),
-      this.get('pswpTheme'),
-      this.get('items'),
-      this.get('options')
+      component.get('pswpEl'),
+      component.get('pswpTheme'),
+      component.get('items'),
+      component.get('options')
     );
-    if (this.get('reinit')) {
-      this.sendAction('reinit', gallery);
+    if (component.get('reinit')) {
+      component.get('reinit')(gallery);
     }
+    component.set('gallery', gallery);
+    return gallery;
+  },
+
+  _initItemGallery: function() {
+    const gallery = this.setupGallery(this);
     this._reInitOnClose(gallery);
+  },
+
+  willDestroyElement() {
   },
 
   _reInitOnClose: function(gallery) {
     var component = this;
     gallery.listen('close', function() {
       run.next(function() {
-        component.sendAction('destroy');
+        component.get('destroy')();
       });
     });
   },
 
 
   _getBounds: function(i) {
-    var img      = this.$('img').get(i),
-        position = this.$(img).position(),
-        width    = this.$(img).width();
+    const img = this.$('img').get(i);
+    const position = this.$(img).position();
+    const width = this.$(img).width();
     return {x: position.left, y: position.top, w: width};
-  },
-
-  actions: {
-    launchGallery(item) {
-      this._buildOptions(this._getBounds.bind(this));
-      if (item !== undefined) {
-        var index = this.get('items').indexOf(item);
-        this.set('options.index', index);
-      }
-      var pSwipe = new PhotoSwipe(
-        this.get('pswpEl'),
-        this.get('pswpTheme'),
-        this.get('items'),
-        this.get('options')
-      );
-      this.sendAction('postLaunchGallery', pSwipe);
-    }
-  },
-
-
-  /**
-   * DEPRECATED
-   *
-   * Code exists for backward compatibility of block usage
-   * up to ember-cli-photoswipe versions 1.0.1.
-   */
-  _calculateItems: function() {
-    Em.deprecate(
-      "Using ember-cli-photoswipe without an items attribute is deprecated. "+
-      "See https://github.com/poetic/ember-cli-photoswipe#usage",
-      false,
-      {id: 'ember-cli-photoswipe.didInsertElement', until: '1.13'}
-    );
-
-    var items           = this.$().find('a');
-    var calculatedItems = Em.A(items).map(function(i, item) {
-      return {
-        src:   Em.$(item).attr('href'),
-        w:     Em.$(item).data('width'),
-        h:     Em.$(item).data('height'),
-        msrc:  Em.$(item).children('img').attr('src'),
-        title: Em.$(item).children('img').attr('alt')
-      };
-    });
-    this.set('calculatedItems', calculatedItems);
   }
-  /**
-   * END DEPRECATED
-   */
-
 });

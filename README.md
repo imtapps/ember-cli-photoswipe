@@ -72,9 +72,17 @@ PhotoSwipe component to hide PhotoSwipe buttons (default to false):
 
 If you have ideas or feature needs that could be implemented, just submit an issue
 or pull request.
+=======
+my-addon
+==============================================================================
 
-## Installation
+[Short description of the addon.]
+>>>>>>> 210d16d... message
 
+Installation
+------------------------------------------------------------------------------
+
+<<<<<<< HEAD
 ###### Ember-cli >= 0.1.5
 As easy as running `ember install:addon ember-cli-photoswipe`, which will also
 run the generator.
@@ -82,8 +90,35 @@ run the generator.
 ###### Ember-cli < 0.1.5
 For versions under 0.1.5 you need to run `npm install ember-cli-photoswipe
 --save-dev`.
+=======
+```
+ember install my-addon
+```
 
-## Running
+
+Usage
+------------------------------------------------------------------------------
+
+[Longer description of how to use the addon in apps.]
+
+
+Contributing
+------------------------------------------------------------------------------
+
+### Installation
+
+* `git clone <repository-url>`
+* `cd my-addon`
+* `npm install`
+>>>>>>> 210d16d... message
+
+### Linting
+
+* `npm run lint:hbs`
+* `npm run lint:js`
+* `npm run lint:js -- --fix`
+
+### Running tests
 
 To run the dummy app:
 
@@ -91,13 +126,14 @@ To run the dummy app:
 * `ember server`
 * Visit your app at http://localhost:4200.
 
-## Running Tests
+### Running the dummy application
 
-* `ember test`
-* `ember test --server`
+* `ember serve`
+* Visit the dummy application at [http://localhost:4200](http://localhost:4200).
 
-## Building
+For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
 
-* `ember build`
+License
+------------------------------------------------------------------------------
 
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+This project is licensed under the [MIT License](LICENSE.md).
