@@ -82,35 +82,19 @@ my-addon
 Installation
 ------------------------------------------------------------------------------
 
-<<<<<<< HEAD
 ###### Ember-cli >= 0.1.5
 As easy as running `ember install:addon ember-cli-photoswipe`, which will also
 run the generator.
-
-###### Ember-cli < 0.1.5
-For versions under 0.1.5 you need to run `npm install ember-cli-photoswipe
---save-dev`.
-=======
 ```
 ember install my-addon
 ```
 
-
-Usage
-------------------------------------------------------------------------------
-
-[Longer description of how to use the addon in apps.]
-
-
-Contributing
-------------------------------------------------------------------------------
 
 ### Installation
 
 * `git clone <repository-url>`
 * `cd my-addon`
 * `npm install`
->>>>>>> 210d16d... message
 
 ### Linting
 
