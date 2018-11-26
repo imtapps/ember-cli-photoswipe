@@ -1,12 +1,13 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { later } from '@ember/runloop';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   // example 1
-  psOpts: {
+  psOpts: { //eslint-disable-line
     index: 1
   },
 
-  items1: [
+  items1: [ //eslint-disable-line
     {
       src: 'http://placekitten.com/g/600/400',
       w: 600,
@@ -20,7 +21,7 @@ export default Ember.Controller.extend({
     }
   ],
 
-  items2: [
+  items2: [ //eslint-disable-line
     {
       src: 'http://placekitten.com/g/60/40',
       w: 60,
@@ -37,21 +38,28 @@ export default Ember.Controller.extend({
   // actions
   actions: {
     initGallery() {
-      this.get('myGallery').init();
+      this.set('photoSwipe', true);
+      later(() => {
+        this.get('myGallery').init();
+      });
+    },
+
+    destroyPhotoswipe() {
+      this.set('photoSwipe', '');
     },
 
     changeItems() {
       if (this.get('items') === this.get('items1')) {
-        console.log('changing to 2');
+        console.log('changing to 2'); //eslint-disable-line
         this.set('items', this.get('items2'));
       } else {
-        console.log('changing to 1');
+        console.log('changing to 1'); //eslint-disable-line
         this.set('items', this.get('items1'));
       }
     }
   },
 
-  psTwoOpts: {
+  psTwoOpts: { //eslint-disable-line
     hideShare: true
   }
 });

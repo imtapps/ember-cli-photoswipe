@@ -1,3 +1,1 @@
-import PhotoSwipe from 'ember-cli-photoswipe/components/photo-swipe';
-
-export default PhotoSwipe;
+export { default } from 'ember-cli-photoswipe/components/photo-swipe';

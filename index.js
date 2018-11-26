@@ -1,26 +1,22 @@
-/* jshint node: true */
 'use strict';
 
-var path   = require('path');
+var path = require('path');
 var funnel = require('broccoli-funnel');
 
 module.exports = {
   name: 'ember-cli-photoswipe',
 
   included: function(app) {
-    this.app  = app;
-    var psDir = app.bowerDirectory + '/photoswipe';
-
     if (!process.env.EMBER_CLI_FASTBOOT) {
-      app.import(psDir + '/dist/photoswipe.css');
-      app.import(psDir + '/dist/default-skin/default-skin.css');
-      app.import(psDir + '/dist/photoswipe.js');
-      app.import(psDir + '/dist/photoswipe-ui-default.min.js');
+      app.import('node_modules/photoswipe/dist/photoswipe.css');
+      app.import('node_modules/photoswipe/dist/default-skin/default-skin.css');
+      app.import('node_modules/photoswipe/dist/photoswipe.min.js');
+      app.import('node_modules/photoswipe/dist/photoswipe-ui-default.min.js');
     }
   },
 
   treeForPublic: function() {
-    var svgPath = path.join(this.app.bowerDirectory, 'photoswipe', 'dist', 'default-skin');
+    var svgPath = path.join('node_modules/photoswipe/dist/default-skin');
     var publicTree = new funnel(this.treeGenerator(svgPath), {
       srcDir: '/',
       destDir: '/assets',
